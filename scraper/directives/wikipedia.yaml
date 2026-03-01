@@ -13,3 +13,17 @@ scrape:
   description: 
     - 'p'
     - attr: 'text'
+
+
+scrape:
+  title: 
+    - '.mw-page-title-main'
+    - attr: 'text'
+
+  note: 
+    - '.hatnote'
+    - attr: 'text'
+
+  description: 
+    - 'p'
+    - attr: 'text'

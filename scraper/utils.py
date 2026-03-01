@@ -5,7 +5,6 @@ from datetime import datetime
 from playwright.async_api import async_playwright
 from bson.json_util import dumps
 import json
-import scraper.db_utils
 import schedule
 import time
 import csv
@@ -86,7 +85,10 @@ def use_bs4(dados):
     return elements_output
 
 def get_scraped_by_sites_formated(name):
-    res = db_utils.get_elements_by_site(name)
+    import scraper.db_utils
+    res = scraper.db_utils.get_elements_by_site(name)
     json_str = dumps(res)
     data = json.loads(json_str)
     return data
+
+
