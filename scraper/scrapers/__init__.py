@@ -26,6 +26,45 @@ from scraper.reporter import ScrapeStats, count_fields
 from scraper.logger import log
 
 
+# Required keys for directive validation
+_REQUIRED_KEYS = ["site", "use", "scrape"]
+
+
+def _validate_directive(dados: dict, path: str):
+    """
+    Validate that directive YAML has all required keys.
+    
+    Args:
+        dados: Loaded YAML dictionary
+        path: Directive file path (for error messages)
+    
+    Raises:
+        ValueError: If required keys are missing
+    """
+    # Check for 'sites' key (alternative to 'site')
+    has_site = "site" in dados
+    has_sites = "sites" in dados
+    
+    missing = []
+    for key in _REQUIRED_KEYS:
+        if key == "site":
+            # Either 'site' or 'sites' is acceptable
+            if not has_site and not has_sites:
+                missing.append(key)
+        else:
+            if key not in dados:
+                missing.append(key)
+    
+    if missing:
+        directive_name = Path(path).stem
+        missing_str = ", ".join(missing)
+        all_keys = ", ".join(_REQUIRED_KEYS)
+        raise ValueError(
+            f"Directive '{directive_name}' is missing required key(s): {missing_str}\n"
+            f"Required keys: {all_keys}"
+        )
+
+
 async def grab_elements_by_directive(path: str) -> dict | list[dict]:
     """
     Main entry point. Returns a single dict for simple scrapes,
@@ -33,6 +72,9 @@ async def grab_elements_by_directive(path: str) -> dict | list[dict]:
     """
     with open(path) as f:
         dados = yaml.safe_load(f)
+    
+    # Validate directive has required keys
+    _validate_directive(dados, path)
 
     directive_name = Path(path).stem
     stats = ScrapeStats(directive=directive_name, url=dados.get("site", ""))
