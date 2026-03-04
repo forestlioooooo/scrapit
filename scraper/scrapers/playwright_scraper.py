@@ -73,7 +73,6 @@ async def scrape(dados: dict, directive_name: str = "") -> dict:
                 continue
 
             if get_all:
-                all_locators = locator.all() if hasattr(locator, "all") else [locator.first]
                 items = []
                 for loc in await _safe_all(locator):
                     items.append(await _get_attr(loc, attr))

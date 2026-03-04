@@ -30,7 +30,7 @@ class ScrapeStats:
         coverage_bar = _bar(self.coverage_pct)
         lines = [
             "",
-            f"  ┌─ Scrape Report ──────────────────────────────────",
+            "  ┌─ Scrape Report ──────────────────────────────────",
             f"  │  directive   : {self.directive}",
             f"  │  url         : {self.url}",
         ]
