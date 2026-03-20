@@ -6,3 +6,4 @@ pymongo
 python-dotenv
 playwright
 openpyxl
+httpx
